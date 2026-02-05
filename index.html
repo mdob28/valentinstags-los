@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JEDES LOS GEWINNT! 🎰</title>
+  <style>
+    :root{
+      --bg1:#070819; --bg2:#0b1330;
+      --gold:#f5c542; --gold2:#ffe08a;
+      --neon:#ff3b7a; --neon2:#6cffdf;
+      --card:#0c1024cc; --text:#f3f5ff; --muted:#c8cbe6;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 20% 10%, rgba(108,255,223,.18), transparent 60%),
+        radial-gradient(900px 600px at 80% 20%, rgba(255,59,122,.18), transparent 55%),
+        radial-gradient(800px 500px at 55% 85%, rgba(245,197,66,.14), transparent 55%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
+      overflow-x:hidden;
+    }
+    .shine{
+      position:fixed; inset:-40%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,.08), transparent);
+      transform:rotate(15deg);
+      animation:shine 7s linear infinite;
+      pointer-events:none;
+      mix-blend-mode:screen;
+    }
+    @keyframes shine{0%{translate:-40% 0}100%{translate:40% 0}}
+
+    .wrap{width:min(980px, 92vw); margin:24px auto 48px;}
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      padding:14px 16px; border-radius:16px;
+      background:rgba(255,255,255,.06);
+      backdrop-filter: blur(8px);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.06em; text-transform:uppercase;}
+    .chip{
+      padding:6px 10px; border-radius:999px; font-size:12px;
+      background:linear-gradient(90deg, rgba(245,197,66,.25), rgba(255,224,138,.12));
+      border:1px solid rgba(245,197,66,.35);
+      color:var(--gold2); white-space:nowrap;
+    }
+
+    .hero{
+      margin-top:18px; padding:22px 18px 18px; border-radius:20px;
+      background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      position:relative; overflow:hidden;
+    }
+    .hero::before{
+      content:""; position:absolute; inset:-2px;
+      background:radial-gradient(600px 220px at 30% 0%, rgba(245,197,66,.18), transparent 70%);
+      pointer-events:none;
+    }
+    .headline{
+      text-align:center; margin:0;
+      font-size:clamp(28px, 5vw, 48px);
+      font-weight:900; letter-spacing:.02em; text-transform:uppercase;
+      text-shadow:0 0 18px rgba(245,197,66,.18), 0 0 28px rgba(255,59,122,.18);
+    }
+    .sub{
+      text-align:center; margin:10px auto 0; max-width:70ch;
+      color:var(--muted);
+      font-size:clamp(14px, 2.6vw, 18px);
+      line-height:1.45;
+    }
+    .badges{
+      margin:16px auto 0; display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+    }
+    .badge{
+      padding:10px 12px; border-radius:14px;
+      background:rgba(12,16,36,.65);
+      border:1px solid rgba(255,255,255,.10);
+      min-width:170px; display:flex; align-items:center; justify-content:center; gap:8px;
+      font-weight:700;
+    }
+    .badge strong{color:var(--gold2)}
+    .badge .dot{width:10px; height:10px; border-radius:50%; background:var(--neon2); box-shadow:0 0 14px rgba(108,255,223,.65);}
+
+    .grid{margin-top:16px; display:grid; grid-template-columns: 1.15fr .85fr; gap:14px;}
+    @media (max-width: 860px){ .grid{grid-template-columns:1fr} }
+
+    .panel{
+      border-radius:20px;
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow:0 14px 40px rgba(0,0,0,.35);
+      overflow:hidden;
+    }
+    .panel-h{
+      padding:14px 16px; display:flex; align-items:center; justify-content:space-between; gap:10px;
+      background:rgba(255,255,255,.06);
+      border-bottom:1px solid rgba(255,255,255,.10);
+    }
+    .panel-h .title{
+      font-weight:900; letter-spacing:.04em; text-transform:uppercase; color:var(--gold2);
+      display:flex; align-items:center; gap:10px;
+    }
+    .live{
+      font-size:12px; padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,59,122,.35);
+      background:rgba(255,59,122,.14);
+      color:#ffd6e4; display:flex; align-items:center; gap:8px; white-space:nowrap;
+    }
+    .pulse{width:8px; height:8px; border-radius:50%; background:var(--neon); box-shadow:0 0 14px rgba(255,59,122,.75); animation:pulse 1.2s infinite;}
+    @keyframes pulse{0%,100%{transform:scale(1); opacity:1}50%{transform:scale(1.5); opacity:.6}}
+
+    .panel-b{padding:16px;}
+
+    .scratch-wrap{
+      position:relative; width:100%; height:260px;
+      border-radius:18px; overflow:hidden;
+      background:radial-gradient(circle at top, rgba(255,255,255,.10), rgba(255,255,255,.04));
+      border:1px solid rgba(245,197,66,.28);
+      box-shadow:0 0 0 2px rgba(245,197,66,.08) inset;
+    }
+    .prize{
+      position:absolute; inset:0; display:grid; place-items:center; padding:14px; text-align:center;
+      background:
+        radial-gradient(650px 280px at 50% 0%, rgba(245,197,66,.22), transparent 70%),
+        radial-gradient(500px 260px at 25% 90%, rgba(108,255,223,.16), transparent 70%),
+        radial-gradient(500px 260px at 75% 90%, rgba(255,59,122,.16), transparent 70%),
+        linear-gradient(180deg, rgba(12,16,36,.65), rgba(12,16,36,.35));
+    }
+    .prize h2{margin:0; font-size:22px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold2);}
+    .prize .big{margin-top:6px; font-size:40px; font-weight:1000; text-shadow:0 0 18px rgba(245,197,66,.18);}
+    .prize .sub2{margin-top:6px; color:var(--muted); font-size:14px; line-height:1.4;}
+
+    canvas{position:absolute; inset:0; width:100%; height:100%; touch-action:none;}
+
+    .hint{margin:10px 2px 0; color:rgba(243,245,255,.78); font-size:13px;}
+    .ctaRow{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; justify-content:center;}
+    button{border:0; border-radius:999px; padding:12px 16px; font-size:16px; cursor:pointer; font-weight:800; letter-spacing:.02em;}
+    .btnGold{color:#2a220b; background:linear-gradient(180deg, var(--gold2), var(--gold)); box-shadow:0 10px 26px rgba(245,197,66,.18);}
+    .btnGold:hover{transform:translateY(-1px)}
+    .btnSoft{background:rgba(255,255,255,.10); color:var(--text); border:1px solid rgba(255,255,255,.14);}
+    .status{margin-top:12px; text-align:center; font-size:18px; min-height:24px;}
+
+    .facts{display:grid; gap:10px;}
+    .fact{padding:12px 12px; border-radius:16px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.10);}
+    .fact .k{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:6px;}
+    .fact .v{font-weight:900; font-size:18px; color:var(--gold2);}
+    .fineprint{margin-top:12px; font-size:12px; color:rgba(243,245,255,.62); line-height:1.45;}
+
+    .confetti{
+      position:fixed; top:-10px;
+      width:10px; height:14px;
+      opacity:.95; pointer-events:none;
+      animation:fall linear forwards;
+    }
+    @keyframes fall{to { transform: translateY(110vh) rotate(720deg); opacity:1; }}
+  </style>
+</head>
+
+<body>
+  <div class="shine"></div>
+
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <span>💘 LoveJackpot</span>
+        <span class="chip">OFFIZIELLES VALENTINS-SPECIAL</span>
+      </div>
+      <div class="chip">ca. 100% Gewinnchance*</div>
+    </div>
+
+    <section class="hero">
+      <h1 class="headline">JEDES LOS GEWINNT!</h1>
+      <p class="sub">
+        Rubble jetzt dein Valentins-Los frei und sichere dir den <b>Hauptgewinn</b>.<br>
+      </p>
+
+      <div class="badges">
+        <div class="badge"><span class="dot"></span> <span><strong>GARANTIERT</strong> Gewinn</span></div>
+        <div class="badge">💎 <span><strong>VIP</strong> Date-Jackpot</span></div>
+        <div class="badge">⚡ <span><strong>Nur heute</strong> verfügbar</span></div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <div class="panel">
+        <div class="panel-h">
+          <div class="title">🎟️ Dein Los</div>
+          <div class="live"><span class="pulse"></span> LIVE-GEWINNSPIEL</div>
+        </div>
+
+        <div class="panel-b">
+          <div class="scratch-wrap" id="wrapScratch">
+            <div class="prize" aria-hidden="true">
+              <div>
+                <h2>HAUPTGEWINN</h2>
+                <div class="big">1 Date mit mir 😘</div>
+                <div class="sub2">Einlösbar am Valentinstag (oder wann’s dir passt) 🌹</div>
+              </div>
+            </div>
+            <canvas id="scratch"></canvas>
+          </div>
+
+          <div class="hint">👉 Mit Finger oder Maus rubbeln.</div>
+
+          <div class="ctaRow">
+            <button class="btnSoft" id="resetBtn" type="button">Nochmal rubbeln 🔄</button>
+            <button class="btnGold" id="claimBtn" type="button">Gewinn abholen 💛</button>
+          </div>
+
+          <div class="status" id="status"></div>
+        </div>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-h">
+          <div class="title">🏆 Gewinninfo</div>
+          <div class="chip">TOP-QUOTEN</div>
+        </div>
+        <div class="panel-b">
+          <div class="facts">
+            <div class="fact"><div class="k">Gewinnchance</div><div class="v">ca. 100%</div></div>
+            <div class="fact"><div class="k">Top-Preis</div><div class="v">eventuell ein Date</div></div>
+            <div class="fact"><div class="k">Bonus</div><div class="v">Zeitvertreib</div></div>
+          </div>
+          <div class="fineprint">
+            *Kleingedrucktes: Teilnehmerin muss mindestens 18 Jahre alt sein.
+			Der Hauptgewinn ist nicht übertragbar, nicht auszahlbar und kann nur gemeinsam eingelöst werden.
+			Mit dem Freirubbeln erklärst du dich einverstanden,Zeit mit mir zu verbringen.
+			Rechtsweg ausgeschlossen.
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById("scratch");
+    const wrap = document.getElementById("wrapScratch");
+    const ctx = canvas.getContext("2d");
+    const statusEl = document.getElementById("status");
+    const resetBtn = document.getElementById("resetBtn");
+    const claimBtn = document.getElementById("claimBtn");
+
+    let isDown = false;
+    let cleared = false;
+
+    function roundRect(c, x, y, w, h, r){
+      const rr = Math.min(r, w/2, h/2);
+      c.beginPath();
+      c.moveTo(x+rr, y);
+      c.arcTo(x+w, y, x+w, y+h, rr);
+      c.arcTo(x+w, y+h, x, y+h, rr);
+      c.arcTo(x, y+h, x, y, rr);
+      c.arcTo(x, y, x+w, y, rr);
+      c.closePath();
+    }
+
+    function resizeCanvas(){
+      const dpr = window.devicePixelRatio || 1;
+      const rect = wrap.getBoundingClientRect();
+
+      // echte Pixelgröße
+      canvas.width  = Math.floor(rect.width  * dpr);
+      canvas.height = Math.floor(rect.height * dpr);
+      canvas.style.width  = rect.width + "px";
+      canvas.style.height = rect.height + "px";
+
+      // in "CSS-Pixel" zeichnen
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      // Cover layer zeichnen
+      ctx.globalCompositeOperation = "source-over";
+
+      const g = ctx.createLinearGradient(0, 0, rect.width, rect.height);
+      g.addColorStop(0, "#8f8f8f");
+      g.addColorStop(0.35, "#cfcfcf");
+      g.addColorStop(0.7, "#7f7f7f");
+      g.addColorStop(1, "#bfbfbf");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, rect.width, rect.height);
+
+      ctx.fillStyle = "rgba(255,255,255,0.18)";
+      for(let i=0;i<55;i++){
+        ctx.beginPath();
+        ctx.arc(Math.random()*rect.width, Math.random()*rect.height, 14+Math.random()*26, 0, Math.PI*2);
+        ctx.fill();
+      }
+
+      // Stamp
+      ctx.save();
+      ctx.translate(rect.width/2, rect.height/2);
+      ctx.rotate(-0.12);
+      ctx.fillStyle = "rgba(255, 59, 122, 0.20)";
+      ctx.strokeStyle = "rgba(255, 59, 122, 0.55)";
+      ctx.lineWidth = 3;
+      const stampW = Math.min(360, rect.width*0.85);
+      const stampH = 64;
+      roundRect(ctx, -stampW/2, -stampH/2, stampW, stampH, 18);
+      ctx.fill(); ctx.stroke();
+
+      ctx.fillStyle = "rgba(255,255,255,.85)";
+      ctx.font = "900 22px system-ui, Arial";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText("JEDES LOS GEWINNT", 0, 0);
+      ctx.restore();
+
+      ctx.fillStyle = "rgba(0,0,0,0.55)";
+      ctx.font = "700 14px system-ui, Arial";
+      ctx.textAlign = "center";
+      ctx.fillText("RUBBLE HIER ✨", rect.width/2, rect.height - 22);
+
+      // ab jetzt: radieren
+      ctx.globalCompositeOperation = "destination-out";
+
+      cleared = false;
+      statusEl.textContent = "";
+    }
+
+    function getPos(e){
+      const rect = canvas.getBoundingClientRect();
+      const t = e.touches?.[0];
+      const clientX = t ? t.clientX : e.clientX;
+      const clientY = t ? t.clientY : e.clientY;
+      return { x: clientX - rect.left, y: clientY - rect.top };
+    }
+
+    function scratchAt(x,y){
+      const radius = 24;
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI*2);
+      ctx.fill();
+    }
+
+    function revealPercent(){
+      // WICHTIG: in echten Canvas-Pixeln auslesen (nicht CSS-Pixel!)
+      const data = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+      let transparent = 0;
+
+      // jede N-te Alpha-Komponente samplen (schnell)
+      const step = 4 * 40; // 40 Pixel Schritte
+      for(let i = 3; i < data.length; i += step){
+        if(data[i] === 0) transparent++;
+      }
+      const total = Math.floor(data.length / step);
+      return transparent / Math.max(1, total);
+    }
+
+    function confettiBurst(){
+      const count = 80;
+      for(let i=0;i<count;i++){
+        const el = document.createElement("div");
+        el.className = "confetti";
+        el.style.left = (Math.random()*100) + "vw";
+        el.style.animationDuration = (2.2 + Math.random()*2.2) + "s";
+        el.style.borderRadius = (Math.random() > .5) ? "2px" : "999px";
+        const hue = Math.floor(Math.random()*360);
+        el.style.background = `hsl(${hue} 90% 60%)`;
+        el.style.width = (6 + Math.random()*8) + "px";
+        el.style.height = (8 + Math.random()*10) + "px";
+        document.body.appendChild(el);
+        setTimeout(()=> el.remove(), 5200);
+      }
+    }
+
+    function finish(){
+      if(cleared) return;
+      cleared = true;
+
+      // komplette Folie weg
+      ctx.setTransform(1,0,0,1,0,0);
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+
+      statusEl.textContent = "🎉 FREIGESCHALTET! Du hesch dr Hauptgewinn grad freig’rubbelt 😘";
+      confettiBurst();
+    }
+
+    function maybeFinish(){
+      if(cleared) return;
+      if(revealPercent() > 0.45) finish();
+    }
+
+    function onDown(e){
+      isDown = true;
+      const {x,y} = getPos(e);
+      scratchAt(x,y);
+      e.preventDefault();
+    }
+    function onMove(e){
+      if(!isDown) return;
+      const {x,y} = getPos(e);
+      scratchAt(x,y);
+      maybeFinish();
+      e.preventDefault();
+    }
+    function onUp(){
+      isDown = false;
+      maybeFinish();
+    }
+
+    // Maus
+    canvas.addEventListener("mousedown", onDown);
+    canvas.addEventListener("mousemove", onMove);
+    window.addEventListener("mouseup", onUp);
+
+    // Touch
+    canvas.addEventListener("touchstart", onDown, {passive:false});
+    canvas.addEventListener("touchmove", onMove, {passive:false});
+    window.addEventListener("touchend", onUp);
+
+    resetBtn.addEventListener("click", () => resizeCanvas());
+
+    claimBtn.addEventListener("click", () => {
+      if(!cleared) finish();
+      statusEl.textContent = "💛 Gewinn abgeholt! Schreib ma: lieber 🍝 Essen oder 🚶 Spaziergang? 😄";
+    });
+
+    window.addEventListener("resize", resizeCanvas);
+
+    resizeCanvas();
+  </script>
+</body>
+</html>
