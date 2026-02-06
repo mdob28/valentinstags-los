@@ -375,7 +375,7 @@
       ctx.setTransform(1,0,0,1,0,0);
       ctx.clearRect(0,0,canvas.width,canvas.height);
 
-      statusEl.textContent = "💛 Gewinn abgeholt! Schreib mir: lieber Essen gehen zuhause kochen? 😄";
+      statusEl.textContent = "💛 Gewinn abgeholt! Schreib mir: lieber Essen gehen oder zuhause kochen? 😄";
       confettiBurst();
     }
 
@@ -416,7 +416,7 @@
 
     claimBtn.addEventListener("click", () => {
       if(!cleared) finish();
-      statusEl.textContent = "💛 Gewinn abgeholt! Schreib mir: lieber Essen gehen zuhause kochen? 😄";
+      statusEl.textContent = "💛 Gewinn abgeholt! Schreib mir: lieber Essen gehen oder zuhause kochen? 😄";
     });
 
     window.addEventListener("resize", resizeCanvas);
@@ -425,5 +425,6 @@
   </script>
 </body>
 </html>
+
 
 
